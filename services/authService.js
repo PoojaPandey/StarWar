@@ -31,10 +31,12 @@ export default {
   setResponse,
 };
 
-const getUserData = async () => {
+const getUserData = async => {
+  console.log('getUserData');
   let userdata = AsyncStorage.getItem('user');
   return {
     status: 'success',
+    message: 'user data',
     user: userdata,
   };
 };

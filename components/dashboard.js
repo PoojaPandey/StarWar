@@ -66,20 +66,19 @@ export default function Dashboard({route, navigation}) {
 
   ///TODO: Need to move in redux
   const setQuestionsData = async () => {
-
     //REDUX PART:
-    dispatch(getQuestions());
-    .then(response => {
-      console.log('response,,,, =>', response);
-    })
-    .catch(error => {
-      console.log('response,,,,');
-      console.log(error);
-    });
-    console.log('questionData', data);
+    dispatch(getQuestions())
+      .then(response => {
+        console.log('response,,,, =>', response);
+      })
+      .catch(error => {
+        console.log('response,,,,');
+        console.log(error);
+      });
+    // console.log('questionData', data);
 
     // Uncomment for happy flow
-   /*
+    /*
     try {
       const url = Constant.QUESTIONS_API + selectedOption.toLowerCase();
       console.log(url);
@@ -99,11 +98,11 @@ export default function Dashboard({route, navigation}) {
    */
   };
 
-    /**
+  /**
    * actionOnRow method to select the level option.
    * @param item: Selected item.
    */
-  const actionOnRow = async (item) => {
+  const actionOnRow = async item => {
     let newArray = options;
     newArray = newArray.map((element, i) => {
       if (element.item === item) {

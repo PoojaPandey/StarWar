@@ -49,7 +49,7 @@ export const getQuestions = level => {
 
   return dispatch => {
     console.log(' getQuestions inside return');
-
+    /*
     // try {
     // async dispatch => {
     console.log(' async dispatch');
@@ -64,43 +64,39 @@ export const getQuestions = level => {
         .then(response => response.json())
         .then(data => console.log(data)),
     });
-
-    // const result = fetch(Constant.QUESTIONS_API + level, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-    // const json = result.json();
-    // console.log(' result.json');
-    // AuthService.setResponse(json.result).then(
-    //   response => {
-    //     console.log(' setData response');
-    //     console.log(response);
-    //     if (response.status === 'success') {
-    //       dispatch({
-    //         type: GET_QUESTIONLIST,
-    //         data: json.result,
-    //       });
-    //       Promise.resolve();
-    //       return response;
-    //     }
-    //   },
-    //   error => {
-    //     const message = error.toString();
-    //     Promise.reject();
-    //     console.log('message ->', message);
-    //     dispatch({
-    //       type: GET_QUESTIONLIST_FAIL,
-    //       data: json.result,
-    //     });
-    //     // return message;
-    //   },
-    // );
-    // };
-    // } catch (error) {
-    //   console.log(error);
-    // }
+*/
+    const result = fetch(Constant.QUESTIONS_API + level, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const json = result.json();
+    console.log(' result.json');
+    AuthService.setResponse(json.result).then(
+      response => {
+        console.log(' setData response');
+        console.log(response);
+        if (response.status === 'success') {
+          dispatch({
+            type: GET_QUESTIONLIST,
+            data: json.result,
+          });
+          Promise.resolve();
+          return response;
+        }
+      },
+      error => {
+        const message = error.toString();
+        Promise.reject();
+        console.log('message ->', message);
+        dispatch({
+          type: GET_QUESTIONLIST_FAIL,
+          data: json.result,
+        });
+        // return message;
+      },
+    );
   };
 };
 
