@@ -1,0 +1,7 @@
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT = 'LOGOUT';
+export const DATASAVED = 'DATASAVED';
+export const FETCHDATA = 'FETCHDATA';
+export const GET_QUESTIONLIST = 'GET_QUESTIONLIST';
+export const GET_QUESTIONLIST_FAIL = 'GET_QUESTIONLIST_FAIL';
+export const GET_USER = 'GET_USER';
