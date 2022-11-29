@@ -14,7 +14,6 @@ const resultStyle = StyleSheet.create({
   },
   innerContainer: {
     backgroundColor: 'white',
-    // justifyContent: 'center',
     borderRadius: 10,
     alignItems: 'center',
     height: '95%',
