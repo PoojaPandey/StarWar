@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import style from './loginStyle';
 import {
   Text,
@@ -31,6 +31,9 @@ export default function Login({navigation}) {
     navigation.navigate(Constant.DASHBOARD_SCREEN, {
       otherParam: userName,
     });
+    setUserName('');
+    setPassword('');
+    setLoginEnable(false);
   };
 
   /**
@@ -83,8 +86,6 @@ export default function Login({navigation}) {
         }
       })
       .catch(error => {
-        console.log('response,,,,');
-        console.log(error);
         Alert.alert(ErrorConstants.ERROR_INVALID_INPUT);
       });
   };
@@ -109,6 +110,7 @@ export default function Login({navigation}) {
               style={style.TextInput}
               placeholder="Username"
               placeholderTextColor="#003f5c"
+              value={userName}
               onChangeText={text => onUserNameTextChange(text)}
             />
           </View>
@@ -118,6 +120,7 @@ export default function Login({navigation}) {
               placeholder="Password."
               placeholderTextColor="#003f5c"
               secureTextEntry={true}
+              value={password}
               onChangeText={text => onPasswordTextChange(text)}
             />
           </View>

@@ -12,17 +12,11 @@ import FeedbackQuestionComponent from './feedbackQuestionComponent';
 import CongratsComponent from './congratsComponent';
 
 export default function ResultScreen({route, navigation}) {
-  const {itemId, otherParam} = route.params;
-  const [data, setData] = useState('');
-  const [options, setOptions] = useState(Constant.LevelOption);
-  const [selectedOption, setSelectedOption] = useState('');
+  const {otherParam} = route.params;
   const [showModel, setShowModel] = useState(false);
   const [totalScore, setTotalScore] = useState('');
 
   const dispatch = useDispatch();
-
-  console.log('route.params', route.params);
-  console.log(itemId);
 
   useEffect(() => {
     initialSeup();

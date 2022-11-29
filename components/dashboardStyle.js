@@ -39,7 +39,7 @@ const DashboardStyle = StyleSheet.create({
     marginTop: 30,
   },
   title: {
-    color: '#FF0000',
+    color: '#4682B4',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 20,

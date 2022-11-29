@@ -6,6 +6,8 @@ import {
   GET_QUESTIONLIST,
   GET_QUESTIONLIST_FAIL,
   GET_USER,
+  USER_SELECTED_DATA,
+  LEVEL_SAVED,
 } from './type';
 import AuthService from '../services/authService';
 import * as Constant from '../utils/constant';
@@ -44,90 +46,59 @@ export const logout = () => dispatch => {
   });
 };
 
-export const getQuestions = level => {
-  console.log(' getQuestions return');
-
-  return dispatch => {
-    console.log(' getQuestions inside return');
-    /*
-    // try {
-    // async dispatch => {
-    console.log(' async dispatch');
-
-    // Alert.alert('Hello');
-
-    fetch('https://opentdb.com/api.php?amount=10&difficulty=easy', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-        .then(response => response.json())
-        .then(data => console.log(data)),
-    });
-*/
-    const result = fetch(Constant.QUESTIONS_API + level, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const json = result.json();
-    console.log(' result.json');
-    AuthService.setResponse(json.result).then(
-      response => {
-        console.log(' setData response');
-        console.log(response);
-        if (response.status === 'success') {
+export const getQuestions = level => dispatch => {
+  return fetch(Constant.QUESTIONS_API + level)
+    .then(response => response.json())
+    .then(response => {
+      return AuthService.setResponse(response.results).then(
+        resp => {
+          if (resp.status === 'success') {
+            dispatch({
+              type: GET_QUESTIONLIST,
+              payload: {questionData: resp.questionData},
+            });
+            Promise.resolve();
+            return resp;
+          }
+        },
+        error => {
+          const message = error.toString();
           dispatch({
-            type: GET_QUESTIONLIST,
-            data: json.result,
+            type: GET_QUESTIONLIST_FAIL,
           });
-          Promise.resolve();
-          return response;
-        }
-      },
-      error => {
-        const message = error.toString();
-        Promise.reject();
-        console.log('message ->', message);
-        dispatch({
-          type: GET_QUESTIONLIST_FAIL,
-          data: json.result,
-        });
-        // return message;
-      },
-    );
-  };
+          Promise.reject();
+          return message;
+        },
+      );
+    })
+    .catch(function (error) {
+      console.log(
+        'There has been a problem with your fetch operation: ' + error.message,
+      );
+      console.log('error: ' + error);
+      // ADD THIS THROW error
+      throw error;
+    });
 };
 
 export const getUser = () => dispatch => {
-  return AuthService.getUserData().then(
-    response => {
-      dispatch({
-        type: GET_USER,
-        payload: {user: response.user},
-      });
-      Promise.resolve();
-      return response;
-    },
-    error => {
-      const message = error.toString();
-      Promise.reject();
-      return message;
-    },
-  );
+  return AuthService.getUserData().then(response => {
+    dispatch({
+      type: GET_USER,
+      payload: {user: response.user},
+    });
+    Promise.resolve();
+
+    return response;
+  });
 };
 
-/*
-export const setData = data => dispatch => {
-  console.log(' setData');
-  return AuthService.setResponse(data).then(response => {
-    console.log(' setData response');
+export const setLevel = data => dispatch => {
+  return AuthService.setLevel(data).then(response => {
     console.log(response);
     if (response.status === 'success') {
       dispatch({
-        type: DATASAVED,
-        user: data,
+        type: LEVEL_SAVED,
       });
       Promise.resolve();
       return response;
@@ -135,13 +106,12 @@ export const setData = data => dispatch => {
   });
 };
 
-export const getData = () => dispatch => {
-  return AuthService.getResponse().then(response => {
+export const getUserSelectedData = () => dispatch => {
+  return AuthService.setUserSelectedData().then(response => {
     dispatch({
-      type: FETCHDATA,
+      type: USER_SELECTED_DATA,
     });
     Promise.resolve();
     return response;
   });
 };
-*/

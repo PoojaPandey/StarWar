@@ -8,19 +8,22 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
-import {getQuestions, logout, getUser} from './../action/auth';
-import shared from '../shared/shared';
+import {useDispatch, useSelector} from 'react-redux';
+import {getQuestions, getUser, logout} from './../action/auth';
 import {FlatList} from 'react-native-gesture-handler';
 import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
 import AnswerComponent from './answerComponent';
 
 export default function Dashboard({route, navigation}) {
-  const {itemId, otherParam} = route.params;
-  const [options, setOptions] = useState(Constant.LevelOption);
+  const {itemId} = route.params;
+  const [options, setOptions] = useState(
+    JSON.parse(JSON.stringify(Constant.LevelOption)),
+  );
   const [selectedOption, setSelectedOption] = useState('');
-
+  const reducer = useSelector(state => state);
+  const {auth} = reducer;
+  const {user} = auth;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,6 +55,8 @@ export default function Dashboard({route, navigation}) {
     dispatch(logout()).then(response => {
       if (response.status === 'success') {
         navigation.navigate(Constant.LOGIN_SCREEN);
+        setOptions(JSON.parse(JSON.stringify(Constant.LevelOption)));
+        setSelectedOption('');
       }
     });
   };
@@ -60,42 +65,30 @@ export default function Dashboard({route, navigation}) {
    * onStartPress method to start with the quiz.
    */
   const onStartPress = () => {
-    console.log('selectedOption', selectedOption);
     setQuestionsData();
   };
 
-  ///TODO: Need to move in redux
+  /**
+   * setQuestionsData method to get question data from api and set to REDUX.
+   */
   const setQuestionsData = async () => {
     //REDUX PART:
-    dispatch(getQuestions())
+    dispatch(getQuestions(selectedOption.toLowerCase()))
       .then(response => {
-        console.log('response,,,, =>', response);
+        console.log(' setQuestionsData response,,,, =>', response);
+        if (response.status === 'success') {
+          navigation.navigate(Constant.QUESTIONS_SCREEN, {
+            itemId: itemId,
+            otherParam: 'anything you want here',
+          });
+          setOptions(JSON.parse(JSON.stringify(Constant.LevelOption)));
+          setSelectedOption('');
+        }
       })
       .catch(error => {
         console.log('response,,,,');
         console.log(error);
       });
-    // console.log('questionData', data);
-
-    // Uncomment for happy flow
-    /*
-    try {
-      const url = Constant.QUESTIONS_API + selectedOption.toLowerCase();
-      console.log(url);
-      const response = await fetch(url);
-      const json = await response.json();
-      console.log(json.results);
-      let commonData = shared.getInstance();
-      commonData.setQuestionData(json.results);
-      navigation.navigate(Constant.QUESTIONS_SCREEN, {
-        itemId: itemId,
-        otherParam: 'anything you want here',
-      });
-    } catch (error) {
-      console.log('error');
-      console.error(error);
-    }
-   */
   };
 
   /**
@@ -124,7 +117,7 @@ export default function Dashboard({route, navigation}) {
         source={require('../asset/bg4.jpeg')}
         style={style.bgimage}>
         <View style={style.innerContainer}>
-          <Text style={style.welcome}>Welcome {otherParam} !</Text>
+          <Text style={style.welcome}>Welcome {user} !</Text>
           <Text style={style.title}>Please select difficulty level!</Text>
           <FlatList
             style={style.list}

@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import AnswerComponent from './answerComponent';
 import shared from '../shared/shared';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserSelectedData} from './../action/auth';
+import update from 'immutability-helper';
 
 export default function QuestionCardComponent({
   handleCallBack,
@@ -21,7 +24,10 @@ export default function QuestionCardComponent({
   const [correctAnswer] = useState(item.correct_answer);
   const [commonData] = useState(shared.getInstance());
   const [currentQuestion, setCurrentQuestion] = useState('');
-
+  const reducer = useSelector(state => state);
+  const {auth} = reducer;
+  const {userSelectedData} = auth;
+  const dispatch = useDispatch();
   /**
    * actionOnRow method to select the level option.
    * @param item: Selected answer.
@@ -47,6 +53,41 @@ export default function QuestionCardComponent({
     handleCallBack();
   };
 
+  // TODO: Check for redux
+  /*
+  const setQuestionData = questionData => {
+    let newArray = [];
+
+    try {
+      // newArray = JSON.parse(userSelectedData);
+    } catch (error) {
+      console.log(error);
+    }
+    // newArray = JSON.parse(userSelectedData);
+    console.log('userSelectedData =>', userSelectedData);
+    console.log('newArray =>', newArray);
+
+    if (newArray == null) {
+      newArray = [];
+      newArray.push(questionData);
+    } else {
+      let index = -1;
+      index = newArray.findIndex(
+        data => data.question === questionData.question,
+      );
+      if (index !== -1) {
+        const updatedQuestionList = update(newArray, {
+          $splice: [[index, 1, questionData]],
+        });
+        newArray = updatedQuestionList;
+      } else {
+        newArray.push(questionData);
+      }
+    }
+    console.log('newArray =>', newArray);
+    dispatch(getUserSelectedData(newArray));
+  };
+*/
   /**
    * renderItem method to to render answer list .
    */

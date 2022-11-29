@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const logIn = async user => {
-  console.log('user info', user);
   const {username, password} = user;
   if (username === 'admin' && password === '12345678') {
     AsyncStorage.setItem('user', JSON.stringify(user));
@@ -24,15 +23,8 @@ const logOut = async () => {
     message: 'You are logged out',
   };
 };
-export default {
-  logIn,
-  logOut,
-  getUserData,
-  setResponse,
-};
 
-const getUserData = async => {
-  console.log('getUserData');
+const getUserData = async () => {
   let userdata = AsyncStorage.getItem('user');
   return {
     status: 'success',
@@ -42,15 +34,46 @@ const getUserData = async => {
 };
 
 const setResponse = async response => {
-  console.log('setResponse');
-  console.log(response);
   AsyncStorage.setItem('data', JSON.stringify(response));
   return {
     status: 'success',
     message: 'You are redirecting to dashbard page',
+    questionData: response,
   };
 };
 
 const getResponse = async response => {
-  return AsyncStorage.getItem('data', JSON.stringify(response));
+  let data = AsyncStorage.getItem('data', JSON.stringify(response));
+  return {
+    status: 'success',
+    message: 'You are redirecting to dashbard page',
+    questionData: response,
+  };
+};
+
+const setLevel = async response => {
+  AsyncStorage.setItem('level', JSON.stringify(response));
+  return {
+    status: 'success',
+    message: 'Your level set',
+    level: response,
+  };
+};
+
+const setUserSelectedData = async data => {
+  AsyncStorage.setItem('userSelectedData', JSON.stringify(data));
+  return {
+    status: 'success',
+    message: 'user selected data',
+    userSelectedData: data,
+  };
+};
+export default {
+  logIn,
+  logOut,
+  getUserData,
+  setResponse,
+  getResponse,
+  setLevel,
+  setUserSelectedData,
 };

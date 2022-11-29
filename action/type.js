@@ -1,5 +1,7 @@
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
+export const LEVEL_SAVED = 'LEVEL_SAVED';
+export const USER_SELECTED_DATA = 'USER_SELECTED_DATA';
 export const DATASAVED = 'DATASAVED';
 export const FETCHDATA = 'FETCHDATA';
 export const GET_QUESTIONLIST = 'GET_QUESTIONLIST';

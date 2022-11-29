@@ -6,13 +6,27 @@ import {
   GET_QUESTIONLIST,
   GET_QUESTIONLIST_FAIL,
   GET_USER,
+  USER_SELECTED_DATA,
+  LEVEL_SAVED,
 } from './../action/type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const user = AsyncStorage.getItem('user');
-const questionData = AsyncStorage.getItem('data');
+const userSelectedData = AsyncStorage.getItem('userSelectedData');
 const initialState = user
-  ? {isLoggedIn: true, user, questionData: null}
-  : {isLoggedIn: false, user: null, questionData: null};
+  ? {
+      isLoggedIn: true,
+      user,
+      questionData: null,
+      level: null,
+      userSelectedData,
+    }
+  : {
+      isLoggedIn: false,
+      user: null,
+      questionData: null,
+      level: null,
+      userSelectedData: null,
+    };
 export const auth = (state = initialState, action) => {
   const {type, payload} = action;
   switch (type) {
@@ -21,14 +35,14 @@ export const auth = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         user: payload.user,
-        data: null,
+        questionData: null,
       };
     case LOGOUT:
       return {
         ...state,
         isLoggedIn: false,
         user: null,
-        data: null,
+        questionData: null,
       };
     case DATASAVED:
       console.log(payload.data);
@@ -36,21 +50,20 @@ export const auth = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         user: payload.user,
-        data: payload.questionData,
+        questionData: payload.questionData,
       };
     case FETCHDATA:
       return {
         ...state,
         isLoggedIn: true,
         user: payload.user,
-        data: payload.questionData,
+        questionData: payload.questionData,
       };
     case GET_QUESTIONLIST:
       return {
         ...state,
         isLoggedIn: true,
-        // user: payload.user,
-        data: payload.questionData,
+        questionData: payload.questionData,
       };
     case GET_QUESTIONLIST_FAIL:
       return {
@@ -59,12 +72,17 @@ export const auth = (state = initialState, action) => {
         data: null,
       };
 
-    case GET_USER:
+    case LEVEL_SAVED:
       return {
         ...state,
         isLoggedIn: true,
-        user: payload.user,
-        data: null,
+        level: payload.level,
+      };
+    case USER_SELECTED_DATA:
+      return {
+        ...state,
+        isLoggedIn: true,
+        userSelectedData: payload.userSelectedData,
       };
     default:
       return state;
