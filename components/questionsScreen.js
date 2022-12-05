@@ -4,17 +4,13 @@ import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from './../action/auth';
 import shared from '../shared/shared';
-import {
-  FlatList,
-  State,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import QuestionCardComponent from './questionCardComponent';
 import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
 
 export default function QuestionsScreen({route, navigation}) {
-  const {itemId, otherParam} = route.params;
+  const {otherParam} = route.params;
   const [data, setData] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [isSubmitEnable, setIsSubmitEnable] = useState(true);
@@ -27,7 +23,7 @@ export default function QuestionsScreen({route, navigation}) {
     return () => {
       setData(null);
     };
-  }, [data, itemId, correctAnswer]);
+  }, [data, correctAnswer]);
 
   /**
    * onPressButton method when we click the submit button
@@ -35,7 +31,6 @@ export default function QuestionsScreen({route, navigation}) {
   const onPressButton = () => {
     let commonData = shared.getInstance();
     navigation.navigate(Constant.RESULT_SCREEN, {
-      itemId: itemId,
       otherParam: commonData.getSelectedQuestion(),
     });
   };
@@ -63,7 +58,7 @@ export default function QuestionsScreen({route, navigation}) {
   const handleCallback = () => {
     let commonData = shared.getInstance();
     let questionsData = commonData.getSelectedQuestion();
-    console.log("questionsData.lenth =>", questionsData.length);
+    console.log('questionsData.lenth =>', questionsData.length);
     if (questionsData.length === data.length) {
       setIsSubmitEnable(false);
     }

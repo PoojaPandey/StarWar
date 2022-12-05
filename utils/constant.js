@@ -17,6 +17,8 @@ export const EASY = 'Easy';
 export const HARD = 'Hard';
 export const CONFIRMATION = 'Confirm';
 export const LOGUT_ALERT_MSG = 'Are you sure you want to log-out?';
+export const SESSION_EXPIRED_TITLE = 'Session Expired';
+export const SESSION_EXPIRED_DETAIL = 'you will be log-out';
 export const LevelOption = [
   {item: EASY, isSelected: false},
   {item: MEDIUM, isSelected: false},

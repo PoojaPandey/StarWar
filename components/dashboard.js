@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Button,
+  BackHandler,
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,9 +15,10 @@ import {FlatList} from 'react-native-gesture-handler';
 import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
 import AnswerComponent from './answerComponent';
+import UserInactivity from 'react-native-user-inactivity';
+import shared from '../shared/shared';
 
-export default function Dashboard({route, navigation}) {
-  const {itemId} = route.params;
+export default function Dashboard({navigation}) {
   const [options, setOptions] = useState(
     JSON.parse(JSON.stringify(Constant.LevelOption)),
   );
@@ -24,6 +26,8 @@ export default function Dashboard({route, navigation}) {
   const reducer = useSelector(state => state);
   const {auth} = reducer;
   const {user} = auth;
+  const [active, setActive] = useState(true);
+  const [timer] = useState(300000);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +40,27 @@ export default function Dashboard({route, navigation}) {
         />
       ),
     });
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true,
+    );
+
+    return () => {
+      setActive(false);
+      backHandler.remove();
+    };
   });
+
+  /**
+   * sessionExpried method will be called when user is not active in some time.
+   */
+  const sessionExpried = () => {
+    Alert.alert(
+      Constant.SESSION_EXPIRED_TITLE,
+      Constant.SESSION_EXPIRED_DETAIL,
+      [{text: 'OK', onPress: () => confirmLogout()}],
+    );
+  };
 
   /**
    * logoutPressed method when logout presses.
@@ -55,6 +79,8 @@ export default function Dashboard({route, navigation}) {
     dispatch(logout()).then(response => {
       if (response.status === 'success') {
         navigation.navigate(Constant.LOGIN_SCREEN);
+        let commonData = shared.getInstance();
+        commonData.resetData();
         setOptions(JSON.parse(JSON.stringify(Constant.LevelOption)));
         setSelectedOption('');
       }
@@ -75,10 +101,8 @@ export default function Dashboard({route, navigation}) {
     //REDUX PART:
     dispatch(getQuestions(selectedOption.toLowerCase()))
       .then(response => {
-        console.log(' setQuestionsData response,,,, =>', response);
         if (response.status === 'success') {
           navigation.navigate(Constant.QUESTIONS_SCREEN, {
-            itemId: itemId,
             otherParam: 'anything you want here',
           });
           setOptions(JSON.parse(JSON.stringify(Constant.LevelOption)));
@@ -86,7 +110,6 @@ export default function Dashboard({route, navigation}) {
         }
       })
       .catch(error => {
-        console.log('response,,,,');
         console.log(error);
       });
   };
@@ -112,32 +135,43 @@ export default function Dashboard({route, navigation}) {
 
   return (
     <View style={style.container}>
-      <ImageBackground
-        resizeMode="cover"
-        source={require('../asset/bg4.jpeg')}
-        style={style.bgimage}>
-        <View style={style.innerContainer}>
-          <Text style={style.welcome}>Welcome {user} !</Text>
-          <Text style={style.title}>Please select difficulty level!</Text>
-          <FlatList
-            style={style.list}
-            data={options}
-            renderItem={({item, index}) => (
-              <TouchableOpacity onPress={() => actionOnRow(item.item)}>
-                <AnswerComponent
-                  item={item.item}
-                  isSelected={item.isSelected}
-                />
-              </TouchableOpacity>
-            )}
-          />
-          <ButtonComponent
-            onPress={onStartPress}
-            title={Constant.START_BUTTON}
-            isDisabled={selectedOption === '' ? true : false}
-          />
-        </View>
-      </ImageBackground>
+      <UserInactivity
+        isActive={active}
+        timeForInactivity={timer}
+        onAction={isActive => {
+          if (!isActive) {
+            sessionExpried();
+          }
+        }}
+        style={{flex: 1}}>
+        <ImageBackground
+          resizeMode="cover"
+          source={require('../asset/bg4.jpeg')}
+          style={style.bgimage}>
+          <View style={style.innerContainer}>
+            <Text style={style.welcome}>Welcome {user} !</Text>
+            <Text style={style.title}>Please select difficulty level!</Text>
+            <FlatList
+              style={style.list}
+              data={options}
+              scrollEnabled={false}
+              renderItem={({item, index}) => (
+                <TouchableOpacity onPress={() => actionOnRow(item.item)}>
+                  <AnswerComponent
+                    item={item.item}
+                    isSelected={item.isSelected}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+            <ButtonComponent
+              onPress={onStartPress}
+              title={Constant.START_BUTTON}
+              isDisabled={selectedOption === '' ? true : false}
+            />
+          </View>
+        </ImageBackground>
+      </UserInactivity>
     </View>
   );
 }

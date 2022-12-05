@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const logIn = async user => {
-  const {username, password} = user;
+import {Platform} from 'react-native';
+
+const logIn = async (username, password) => {
   if (username === 'admin' && password === '12345678') {
-    AsyncStorage.setItem('user', JSON.stringify(user));
+    AsyncStorage.setItem('user', username);
     return {
       status: 'success',
       message: 'You are redirecting to home page',
@@ -17,20 +18,36 @@ const logIn = async user => {
   }
 };
 const logOut = async () => {
-  AsyncStorage.clear();
-  return {
-    status: 'success',
-    message: 'You are logged out',
-  };
+  const asyncStorageKeys = await AsyncStorage.getAllKeys();
+  if (asyncStorageKeys.length > 0) {
+    if (Platform.OS === 'android') {
+      await AsyncStorage.clear();
+      return {
+        status: 'success',
+        message: 'You are logged out',
+      };
+    }
+    if (Platform.OS === 'ios') {
+      await AsyncStorage.multiRemove(asyncStorageKeys);
+      return {
+        status: 'success',
+        message: 'You are logged out',
+      };
+    }
+  }
 };
 
 const getUserData = async () => {
-  let userdata = AsyncStorage.getItem('user');
-  return {
-    status: 'success',
-    message: 'user data',
-    user: userdata,
-  };
+  try {
+    const savedUser = await AsyncStorage.getItem('user');
+    return {
+      status: 'success',
+      message: 'user data',
+      user: savedUser,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const setResponse = async response => {

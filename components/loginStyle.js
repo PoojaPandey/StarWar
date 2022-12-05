@@ -26,15 +26,17 @@ const LoginStyle = StyleSheet.create({
     opacity: 0.9,
     height: 45,
     marginBottom: 20,
-    alignItems: 'center',
     justifyContent: 'center',
     width: '80%',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
-  TextInput: {
+  textInput: {
     height: 50,
-    marginLeft: 20,
+    marginLeft: 400,
     marginRight: 20,
+    paddingLeft: 30,
   },
   loginBtn: {
     marginBottom: 20,

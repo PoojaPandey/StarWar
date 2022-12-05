@@ -5,7 +5,7 @@ import {
   View,
   TextInput,
   ImageBackground,
-  TouchableOpacity,
+  Platform,
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -28,9 +28,7 @@ export default function Login({navigation}) {
    * To check succesfull response.
    */
   const successCall = () => {
-    navigation.navigate(Constant.DASHBOARD_SCREEN, {
-      otherParam: userName,
-    });
+    navigation.navigate(Constant.DASHBOARD_SCREEN);
     setUserName('');
     setPassword('');
     setLoginEnable(false);
@@ -77,7 +75,7 @@ export default function Login({navigation}) {
       password: password,
     };
     console.log(user);
-    dispatch(login(user))
+    dispatch(login(userName, password))
       .then(response => {
         if (response.status === 'success') {
           let common = shared.getInstance();
@@ -98,7 +96,9 @@ export default function Login({navigation}) {
   };
 
   return (
-    <KeyboardAvoidingView style={style.container}>
+    <KeyboardAvoidingView
+      style={style.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}>
       <ImageBackground
         resizeMode="cover"
         source={require('../asset/bg3.jpeg')}
@@ -107,7 +107,7 @@ export default function Login({navigation}) {
           <Text style={style.signInStyle}>Sign In</Text>
           <View style={style.inputView}>
             <TextInput
-              style={style.TextInput}
+              style={style.textInput}
               placeholder="Username"
               placeholderTextColor="#003f5c"
               value={userName}
@@ -116,7 +116,7 @@ export default function Login({navigation}) {
           </View>
           <View style={style.inputView}>
             <TextInput
-              style={style.TextInput}
+              style={style.textInput}
               placeholder="Password."
               placeholderTextColor="#003f5c"
               secureTextEntry={true}

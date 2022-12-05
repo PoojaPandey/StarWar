@@ -1,27 +1,45 @@
 import React, {useState, useEffect} from 'react';
 import style from './resultStyle';
-import {Text, View, ImageBackground, Image, Button, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  ImageBackground,
+  Image,
+  Button,
+  Alert,
+  BackHandler,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {logout} from './../action/auth';
 import shared from '../shared/shared';
 import {FlatList} from 'react-native-gesture-handler';
 import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
-import AnswerComponent from './answerComponent';
 import FeedbackQuestionComponent from './feedbackQuestionComponent';
 import CongratsComponent from './congratsComponent';
+import UserInactivity from 'react-native-user-inactivity';
 
 export default function ResultScreen({route, navigation}) {
   const {otherParam} = route.params;
   const [showModel, setShowModel] = useState(false);
   const [totalScore, setTotalScore] = useState('');
+  const [active] = useState(true);
+  const [timer] = useState(300000);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     initialSeup();
-  }, [otherParam, totalScore, navigation]);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true,
+    );
+    return () => backHandler.remove();
+  });
 
+  /**
+   * initialSeup method to setup navigation bar logout button and calculating tottal score.
+   */
   const initialSeup = () => {
     let total = 0;
     otherParam.map(item => {
@@ -42,6 +60,17 @@ export default function ResultScreen({route, navigation}) {
   };
 
   /**
+   * sessionExpried method will be called when user is not active in some time.
+   */
+  const sessionExpried = () => {
+    Alert.alert(
+      Constant.SESSION_EXPIRED_TITLE,
+      Constant.SESSION_EXPIRED_DETAIL,
+      [{text: 'OK', onPress: () => confirmLogout()}],
+    );
+  };
+
+  /**
    * logoutPressed method when login clicked.
    */
   const logoutPressed = () => {
@@ -58,6 +87,8 @@ export default function ResultScreen({route, navigation}) {
     dispatch(logout()).then(response => {
       if (response.status === 'success') {
         navigation.navigate(Constant.LOGIN_SCREEN);
+        let commonData = shared.getInstance();
+        commonData.resetData();
       }
     });
   };
@@ -130,30 +161,39 @@ export default function ResultScreen({route, navigation}) {
 
   return (
     <View style={style.container}>
-      <ImageBackground
-        resizeMode="cover"
-        source={require('../asset/bg5.jpeg')}
-        style={style.bgimage}>
-        <View style={style.innerContainer}>
-          <Image
-            style={style.image}
-            source={
-              totalScore > 50.0
-                ? require('../asset/congrats-14.gif')
-                : require('../asset/sad2.gif')
-            }
-          />
-          <Text style={style.result}>Total Score: {totalScore}%</Text>
-          <Button title="View feedback" onPress={() => viewFeeedback()} />
-          <ButtonComponent
-            onPress={goToHomePressed}
-            title={Constant.GO_TO_HOME}
-            isDisabled={false}
-          />
-        </View>
-        <QuestionFeedBack />
-        {/* <CongratsComponent style={style.overlay} /> */}
-      </ImageBackground>
+      <UserInactivity
+        isActive={active}
+        timeForInactivity={timer}
+        onAction={isActive => {
+          if (!isActive) {
+            sessionExpried();
+          }
+        }}>
+        <ImageBackground
+          resizeMode="cover"
+          source={require('../asset/bg5.jpeg')}
+          style={style.bgimage}>
+          <View style={style.innerContainer}>
+            <Image
+              style={style.image}
+              source={
+                totalScore > 50.0
+                  ? require('../asset/congrats-14.gif')
+                  : require('../asset/sad2.gif')
+              }
+            />
+            <Text style={style.result}>Total Score: {totalScore}%</Text>
+            <Button title="View feedback" onPress={() => viewFeeedback()} />
+            <ButtonComponent
+              onPress={goToHomePressed}
+              title={Constant.GO_TO_HOME}
+              isDisabled={false}
+            />
+          </View>
+          <QuestionFeedBack />
+          {/* <CongratsComponent style={style.overlay} /> */}
+        </ImageBackground>
+      </UserInactivity>
     </View>
   );
 }

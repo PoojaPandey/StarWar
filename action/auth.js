@@ -1,8 +1,6 @@
 import {
   LOGIN_SUCCESS,
   LOGOUT,
-  DATASAVED,
-  FETCHDATA,
   GET_QUESTIONLIST,
   GET_QUESTIONLIST_FAIL,
   GET_USER,
@@ -13,8 +11,8 @@ import AuthService from '../services/authService';
 import * as Constant from '../utils/constant';
 import {Alert} from 'react-native';
 
-export const login = user => dispatch => {
-  return AuthService.logIn(user).then(
+export const login = (user, password) => dispatch => {
+  return AuthService.logIn(user, password).then(
     response => {
       console.log('response.status');
       console.log(response.status);
@@ -83,12 +81,12 @@ export const getQuestions = level => dispatch => {
 
 export const getUser = () => dispatch => {
   return AuthService.getUserData().then(response => {
+    console.log('response', response);
     dispatch({
-      type: GET_USER,
+      type: LOGIN_SUCCESS,
       payload: {user: response.user},
     });
     Promise.resolve();
-
     return response;
   });
 };
