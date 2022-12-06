@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 export default function buttonComponent({onPress, title, isDisabled}) {
   return (
@@ -8,9 +7,7 @@ export default function buttonComponent({onPress, title, isDisabled}) {
       style={[styles.button, {opacity: isDisabled === true ? 0.5 : 1}]}
       disabled={isDisabled}
       onPress={onPress}>
-      {/* <LinearGradient colors={['#FFD700', '#009688']} style={styles.button}> */}
       <Text style={styles.text}>{title}</Text>
-      {/* </LinearGradient> */}
     </TouchableOpacity>
   );
 }

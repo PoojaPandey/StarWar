@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import style from './questionsStyle';
-import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from './../action/auth';
+import {View, ImageBackground} from 'react-native';
+import {useSelector} from 'react-redux';
 import shared from '../shared/shared';
 import {FlatList} from 'react-native-gesture-handler';
 import QuestionCardComponent from './questionCardComponent';
@@ -10,9 +9,8 @@ import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
 
 export default function QuestionsScreen({route, navigation}) {
-  const {otherParam} = route.params;
   const [data, setData] = useState('');
-  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [correctAnswer] = useState('');
   const [isSubmitEnable, setIsSubmitEnable] = useState(true);
   const reducer = useSelector(state => state);
   const {auth} = reducer;
@@ -58,7 +56,6 @@ export default function QuestionsScreen({route, navigation}) {
   const handleCallback = () => {
     let commonData = shared.getInstance();
     let questionsData = commonData.getSelectedQuestion();
-    console.log('questionsData.lenth =>', questionsData.length);
     if (questionsData.length === data.length) {
       setIsSubmitEnable(false);
     }
@@ -84,7 +81,7 @@ export default function QuestionsScreen({route, navigation}) {
           />
           <ButtonComponent
             onPress={onPressButton}
-            title="SUBMIT"
+            title={Constant.SUBMIT_BUTTON}
             isDisabled={isSubmitEnable}
           />
         </View>

@@ -20,6 +20,7 @@ const LoginStyle = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+
   inputView: {
     backgroundColor: '#ADD8E6',
     borderRadius: 30,
@@ -34,9 +35,8 @@ const LoginStyle = StyleSheet.create({
 
   textInput: {
     height: 50,
-    marginLeft: 400,
-    marginRight: 20,
-    paddingLeft: 30,
+    flex: 1,
+    alignItems: 'center',
   },
   loginBtn: {
     marginBottom: 20,

@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
+import {View, StyleSheet, ImageBackground} from 'react-native';
 
 export default function CongratsComponent() {
   const [show, setShow] = useState(true);
 
-  // On componentDidMount set the timer
   useEffect(() => {
     const timeId = setTimeout(() => {
-      // After 3 seconds set the show value to false
       setShow(false);
     }, 3000);
 

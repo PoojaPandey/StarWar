@@ -45,9 +45,7 @@ const getUserData = async () => {
       message: 'user data',
       user: savedUser,
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 const setResponse = async response => {

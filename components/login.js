@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import style from './loginStyle';
 import {
   Text,
@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import {login, setData} from './../action/auth';
+import {login} from './../action/auth';
 
 import * as ErrorConstants from '../utils/errorConstant';
 import * as Constant from '../utils/constant';
@@ -74,7 +74,6 @@ export default function Login({navigation}) {
       username: userName,
       password: password,
     };
-    console.log(user);
     dispatch(login(userName, password))
       .then(response => {
         if (response.status === 'success') {
@@ -108,7 +107,7 @@ export default function Login({navigation}) {
           <View style={style.inputView}>
             <TextInput
               style={style.textInput}
-              placeholder="Username"
+              placeholder={Constant.USERNAME_PLACEHOLDER}
               placeholderTextColor="#003f5c"
               value={userName}
               onChangeText={text => onUserNameTextChange(text)}
@@ -117,7 +116,7 @@ export default function Login({navigation}) {
           <View style={style.inputView}>
             <TextInput
               style={style.textInput}
-              placeholder="Password."
+              placeholder={Constant.PASSWORD_PLACEHOLDER}
               placeholderTextColor="#003f5c"
               secureTextEntry={true}
               value={password}

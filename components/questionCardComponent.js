@@ -53,41 +53,6 @@ export default function QuestionCardComponent({
     handleCallBack();
   };
 
-  // TODO: Check for redux
-  /*
-  const setQuestionData = questionData => {
-    let newArray = [];
-
-    try {
-      // newArray = JSON.parse(userSelectedData);
-    } catch (error) {
-      console.log(error);
-    }
-    // newArray = JSON.parse(userSelectedData);
-    console.log('userSelectedData =>', userSelectedData);
-    console.log('newArray =>', newArray);
-
-    if (newArray == null) {
-      newArray = [];
-      newArray.push(questionData);
-    } else {
-      let index = -1;
-      index = newArray.findIndex(
-        data => data.question === questionData.question,
-      );
-      if (index !== -1) {
-        const updatedQuestionList = update(newArray, {
-          $splice: [[index, 1, questionData]],
-        });
-        newArray = updatedQuestionList;
-      } else {
-        newArray.push(questionData);
-      }
-    }
-    console.log('newArray =>', newArray);
-    dispatch(getUserSelectedData(newArray));
-  };
-*/
   /**
    * renderItem method to to render answer list .
    */

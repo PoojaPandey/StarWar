@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getQuestions, getUser, logout} from './../action/auth';
+import {getQuestions, logout} from './../action/auth';
 import {FlatList} from 'react-native-gesture-handler';
 import ButtonComponent from './buttonComponent';
 import * as Constant from './../utils/constant';
@@ -109,9 +109,7 @@ export default function Dashboard({navigation}) {
           setSelectedOption('');
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   /**

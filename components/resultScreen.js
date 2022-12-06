@@ -126,7 +126,7 @@ export default function ResultScreen({route, navigation}) {
         <View style={[showModel ? style.overlay : null]}>
           <Button
             style={style.close}
-            title="close"
+            title={Constant.CLOSE_BUTTON}
             onPress={() => closePressed()}
           />
           <FlatList
@@ -182,7 +182,9 @@ export default function ResultScreen({route, navigation}) {
                   : require('../asset/sad2.gif')
               }
             />
-            <Text style={style.result}>Total Score: {totalScore}%</Text>
+            <Text style={style.result}>
+              {Constant.TOTAL_SCORE} {totalScore}%
+            </Text>
             <Button title="View feedback" onPress={() => viewFeeedback()} />
             <ButtonComponent
               onPress={goToHomePressed}

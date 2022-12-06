@@ -3,19 +3,15 @@ import {
   LOGOUT,
   GET_QUESTIONLIST,
   GET_QUESTIONLIST_FAIL,
-  GET_USER,
   USER_SELECTED_DATA,
   LEVEL_SAVED,
 } from './type';
 import AuthService from '../services/authService';
 import * as Constant from '../utils/constant';
-import {Alert} from 'react-native';
 
 export const login = (user, password) => dispatch => {
   return AuthService.logIn(user, password).then(
     response => {
-      console.log('response.status');
-      console.log(response.status);
       if (response.status === 'success') {
         dispatch({
           type: LOGIN_SUCCESS,
@@ -73,7 +69,6 @@ export const getQuestions = level => dispatch => {
       console.log(
         'There has been a problem with your fetch operation: ' + error.message,
       );
-      console.log('error: ' + error);
       // ADD THIS THROW error
       throw error;
     });
@@ -81,7 +76,6 @@ export const getQuestions = level => dispatch => {
 
 export const getUser = () => dispatch => {
   return AuthService.getUserData().then(response => {
-    console.log('response', response);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {user: response.user},
@@ -93,7 +87,6 @@ export const getUser = () => dispatch => {
 
 export const setLevel = data => dispatch => {
   return AuthService.setLevel(data).then(response => {
-    console.log(response);
     if (response.status === 'success') {
       dispatch({
         type: LEVEL_SAVED,

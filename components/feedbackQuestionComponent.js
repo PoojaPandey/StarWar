@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 
 export default function feedbackQuestionComponent({item, isCorrect, index}) {
