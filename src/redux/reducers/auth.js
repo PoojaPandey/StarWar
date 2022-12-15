@@ -1,13 +1,11 @@
 import {
   LOGIN_SUCCESS,
   LOGOUT,
-  DATASAVED,
-  FETCHDATA,
   GET_QUESTIONLIST,
   GET_QUESTIONLIST_FAIL,
   USER_SELECTED_DATA,
   LEVEL_SAVED,
-} from './../action/type';
+} from '../action/type';
 const initialState = {
   user: '',
   questionData: null,

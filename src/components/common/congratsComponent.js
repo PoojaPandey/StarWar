@@ -22,7 +22,7 @@ export default function CongratsComponent() {
     <View style={styles.container}>
       <ImageBackground
         resizeMode="cover"
-        source={require('../asset/bg5.jpeg')}
+        source={require('../../asset/bg5.jpeg')}
         style={styles.bgimage}
       />
     </View>

@@ -47,14 +47,6 @@ export default class shared {
     return this.questionList;
   }
 
-  setUser(user) {
-    this.user = user;
-  }
-
-  getUser() {
-    return this.user;
-  }
-
   resetData() {
     this.questionList = [];
   }

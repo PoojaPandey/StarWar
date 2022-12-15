@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import style from './resultStyle';
+import style from './style/resultStyle';
 import {
   Text,
   View,
@@ -10,20 +10,19 @@ import {
   BackHandler,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import {logout} from './../action/auth';
-import shared from '../shared/shared';
+import {logout} from '../redux/action/auth';
+import shared from '../utils/shared';
 import {FlatList} from 'react-native-gesture-handler';
-import ButtonComponent from './buttonComponent';
-import * as Constant from './../utils/constant';
-import FeedbackQuestionComponent from './feedbackQuestionComponent';
-import CongratsComponent from './congratsComponent';
+import ButtonComponent from './common/buttonComponent';
+import * as Constant from '../utils/constant';
+import FeedbackQuestionComponent from './common/feedbackQuestionComponent';
 import UserInactivity from 'react-native-user-inactivity';
 
 export default function ResultScreen({route, navigation}) {
   const {otherParam} = route.params;
   const [showModel, setShowModel] = useState(false);
   const [totalScore, setTotalScore] = useState('');
-  const [active] = useState(true);
+  const [active, setActive] = useState(true);
   const [timer] = useState(300000);
 
   const dispatch = useDispatch();
@@ -63,6 +62,7 @@ export default function ResultScreen({route, navigation}) {
    * sessionExpried method will be called when user is not active in some time.
    */
   const sessionExpried = () => {
+    setActive(false);
     Alert.alert(
       Constant.SESSION_EXPIRED_TITLE,
       Constant.SESSION_EXPIRED_DETAIL,
@@ -97,11 +97,7 @@ export default function ResultScreen({route, navigation}) {
    * goToHomePressed method  when go to hoem pressed.
    */
   const goToHomePressed = () => {
-    let common = shared.getInstance();
-    let user = common.getUser();
-    navigation.navigate(Constant.DASHBOARD_SCREEN, {
-      otherParam: user.username,
-    });
+    navigation.navigate(Constant.DASHBOARD_SCREEN, {});
   };
 
   /**

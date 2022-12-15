@@ -1,17 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import AnswerComponent from './answerComponent';
-import shared from '../shared/shared';
-import {useDispatch, useSelector} from 'react-redux';
-import {getUserSelectedData} from './../action/auth';
-import update from 'immutability-helper';
+import shared from '../../utils/shared';
 
 export default function QuestionCardComponent({
   handleCallBack,
@@ -20,14 +10,10 @@ export default function QuestionCardComponent({
   index,
 }) {
   const [answerOptions, setAnswerOptions] = useState(options);
-  const [question, setQuestion] = useState(item.question);
+  const [question] = useState(item.question);
   const [correctAnswer] = useState(item.correct_answer);
   const [commonData] = useState(shared.getInstance());
-  const [currentQuestion, setCurrentQuestion] = useState('');
-  const reducer = useSelector(state => state);
-  const {auth} = reducer;
-  const {userSelectedData} = auth;
-  const dispatch = useDispatch();
+
   /**
    * actionOnRow method to select the level option.
    * @param item: Selected answer.
@@ -49,7 +35,6 @@ export default function QuestionCardComponent({
       answer: item.option,
     };
     commonData.setSelectedQuestion(questionItem);
-    setCurrentQuestion(questionItem);
     handleCallBack();
   };
 

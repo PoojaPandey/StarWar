@@ -6,9 +6,9 @@ import {Button} from 'react-native';
 const Stack = createNativeStackNavigator();
 import {useDispatch, useSelector} from 'react-redux';
 
-import {getUser} from '../action/auth';
-import Login from '../components/login';
-import Dashboard from '../components/dashboard';
+import {getUser} from '../redux/action/auth';
+import Login from '../components/loginScreen';
+import Dashboard from '../components/dashboardScreen';
 import QuestionsScreen from '../components/questionsScreen';
 import ResultScreen from '../components/resultScreen';
 import * as Constant from '../utils/constant';

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import style from './dashboardStyle';
+import style from './style/dashboardStyle';
 import {
   Text,
   View,
@@ -10,13 +10,13 @@ import {
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getQuestions, logout} from './../action/auth';
+import {getQuestions, logout} from '../redux/action/auth';
 import {FlatList} from 'react-native-gesture-handler';
-import ButtonComponent from './buttonComponent';
-import * as Constant from './../utils/constant';
-import AnswerComponent from './answerComponent';
+import ButtonComponent from './common/buttonComponent';
+import * as Constant from '../utils/constant';
+import AnswerComponent from './common/answerComponent';
 import UserInactivity from 'react-native-user-inactivity';
-import shared from '../shared/shared';
+import shared from '../utils/shared';
 
 export default function Dashboard({navigation}) {
   const [options, setOptions] = useState(
@@ -55,6 +55,7 @@ export default function Dashboard({navigation}) {
    * sessionExpried method will be called when user is not active in some time.
    */
   const sessionExpried = () => {
+    setActive(false);
     Alert.alert(
       Constant.SESSION_EXPIRED_TITLE,
       Constant.SESSION_EXPIRED_DETAIL,

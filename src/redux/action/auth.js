@@ -7,7 +7,7 @@ import {
   LEVEL_SAVED,
 } from './type';
 import AuthService from '../services/authService';
-import * as Constant from '../utils/constant';
+import * as Constant from '../../utils/constant';
 
 export const login = (user, password) => dispatch => {
   return AuthService.logIn(user, password).then(

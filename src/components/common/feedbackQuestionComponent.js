@@ -8,14 +8,14 @@ export default function feedbackQuestionComponent({item, isCorrect, index}) {
         <Image
           style={styles.image}
           source={
-            isCorrect === true
-              ? require('../asset/right1.png')
-              : require('../asset/wrong2.png')
+            isCorrect
+              ? require('../../asset/right1.png')
+              : require('../../asset/wrong2.png')
           }
         />
         <View style={[styles.innerContainer]}>
           <Text style={styles.item}>
-            Q{index}. {item.question}
+            Q{index + 1}. {item.question}
           </Text>
           <Text style={styles.answer}>Answer: {item.correctAnswer}</Text>
           <Text style={styles.answer}>Selected Answer: {item.answer}</Text>

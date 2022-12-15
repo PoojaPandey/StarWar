@@ -59,7 +59,6 @@ const resultStyle = StyleSheet.create({
     left: 0,
     backgroundColor: '#F0F8FF',
     borderRadius: 10,
-    // opacity: 1,
   },
   shadowProp: {
     shadowOffset: {width: 10, height: 10},

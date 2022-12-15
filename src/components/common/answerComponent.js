@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 
 export default function answerComponent({item, isSelected}) {
   const getColor = () => {
-    if (isSelected === true) {
+    if (isSelected) {
       return '#4682B4';
     }
     return 'white';

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import style from './loginStyle';
+import style from './style/loginStyle';
 import {
   Text,
   View,
@@ -10,12 +10,12 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import {login} from './../action/auth';
+import {login} from '../redux/action/auth';
 
 import * as ErrorConstants from '../utils/errorConstant';
 import * as Constant from '../utils/constant';
-import shared from '../shared/shared';
-import ButtonComponent from './buttonComponent';
+import shared from '../utils/shared';
+import ButtonComponent from './common/buttonComponent';
 
 export default function Login({navigation}) {
   const [userName, setUserName] = useState('');
@@ -77,8 +77,6 @@ export default function Login({navigation}) {
     dispatch(login(userName, password))
       .then(response => {
         if (response.status === 'success') {
-          let common = shared.getInstance();
-          common.setUser(user);
           successCall();
         }
       })

@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import style from './questionsStyle';
+import style from './style/questionsStyle';
 import {View, ImageBackground} from 'react-native';
 import {useSelector} from 'react-redux';
-import shared from '../shared/shared';
+import shared from '../utils/shared';
 import {FlatList} from 'react-native-gesture-handler';
-import QuestionCardComponent from './questionCardComponent';
-import ButtonComponent from './buttonComponent';
-import * as Constant from './../utils/constant';
+import QuestionCardComponent from './common/questionCardComponent';
+import ButtonComponent from './common/buttonComponent';
+import * as Constant from '../utils/constant';
 
 export default function QuestionsScreen({route, navigation}) {
   const [data, setData] = useState('');
