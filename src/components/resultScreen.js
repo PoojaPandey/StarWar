@@ -98,6 +98,8 @@ export default function ResultScreen({route, navigation}) {
    */
   const goToHomePressed = () => {
     navigation.navigate(Constant.DASHBOARD_SCREEN, {});
+    let commonData = shared.getInstance();
+    commonData.resetData();
   };
 
   /**

@@ -8,6 +8,8 @@ import {
   Button,
   BackHandler,
   Alert,
+  ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getQuestions, logout} from '../redux/action/auth';
@@ -19,6 +21,7 @@ import UserInactivity from 'react-native-user-inactivity';
 import shared from '../utils/shared';
 
 export default function Dashboard({navigation}) {
+  const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState(
     JSON.parse(JSON.stringify(Constant.LevelOption)),
   );
@@ -100,9 +103,11 @@ export default function Dashboard({navigation}) {
    */
   const setQuestionsData = async () => {
     //REDUX PART:
+    setLoading(true);
     dispatch(getQuestions(selectedOption.toLowerCase()))
       .then(response => {
         if (response.status === 'success') {
+          setLoading(false);
           navigation.navigate(Constant.QUESTIONS_SCREEN, {
             otherParam: 'anything you want here',
           });
@@ -168,6 +173,11 @@ export default function Dashboard({navigation}) {
               title={Constant.START_BUTTON}
               isDisabled={selectedOption === '' ? true : false}
             />
+            {loading ? (
+              <SafeAreaView style={style.loading}>
+                <ActivityIndicator size="large" />
+              </SafeAreaView>
+            ) : null}
           </View>
         </ImageBackground>
       </UserInactivity>

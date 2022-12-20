@@ -51,6 +51,15 @@ const DashboardStyle = StyleSheet.create({
     width: '70%',
     alignContent: 'center',
   },
+  loading: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    position: 'absolute',
+  },
 });
 
 export default DashboardStyle;

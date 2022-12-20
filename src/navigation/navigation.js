@@ -14,7 +14,9 @@ import ResultScreen from '../components/resultScreen';
 import * as Constant from '../utils/constant';
 
 const AuthStack = () => (
-  <Stack.Navigator initialRouteName={Constant.LOGIN_SCREEN}>
+  <Stack.Navigator
+    screenOptions={{gestureEnabled: false}}
+    initialRouteName={Constant.LOGIN_SCREEN}>
     <Stack.Screen
       name={Constant.LOGIN_SCREEN}
       component={Login}
@@ -65,7 +67,9 @@ const AuthStack = () => (
 );
 
 const AuthStackIfLoggedIn = () => (
-  <Stack.Navigator initialRouteName={Constant.DASHBOARD_SCREEN}>
+  <Stack.Navigator
+    screenOptions={{gestureEnabled: false}}
+    initialRouteName={Constant.DASHBOARD_SCREEN}>
     <Stack.Screen
       name={Constant.LOGIN_SCREEN}
       component={Login}
